@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Language and Hand Gestures Using CNN</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-6 offset-md-3">
+                <!-- Add this HTML code where you want to display the camera feed -->
+<!--              <canvas id="video-canvas" class="img-fluid"></canvas>-->
+
+                <img src="{% url 'video_feed' %}" alt="Camera Feed">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-6 offset-md-3">
+                <button id="start-button" class="btn btn-primary btn-block">{{ start_button_text }}</button>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-6 offset-md-3">
+                <h4 id="word-label">{{ word_label_text }}</h4>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-6 offset-md-3">
+                <button id="clear-button" class="btn btn-danger btn-block">Clear Word</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest"></script>
+    <script>
+        let video = document.getElementById('video-canvas');
+        let startButton = document.getElementById('start-button');
+        let clearButton = document.getElementById('clear-button');
+        let wordLabel = document.getElementById('word-label');
+
+        let recognitionModel;
+
+        async function loadModel() {
+            recognitionModel = await tmImage.load('path/to/your/model');
+        }
+
+        async function predict(image) {
+            const prediction = await recognitionModel.predict(image);
+            const maxIndex = prediction.findIndex(value => value === Math.max(...prediction));
+            const alphabet = String.fromCharCode(65 + maxIndex);
+            wordLabel.innerHTML += alphabet;
+        }
+
+        startButton.addEventListener('click', () => {
+            if (startButton.innerHTML === 'Start Process') {
+                startButton.innerHTML = 'Stop Process';
+                startButton.classList.remove('btn-primary');
+                startButton.classList.add('btn-secondary');
+                // Start the hand tracking and classification process here
+            } else {
+                startButton.innerHTML = 'Start Process';
+                startButton.classList.remove('btn-secondary');
+                startButton.classList.add('btn-primary');
+                // Stop the hand tracking and classification process here
+            }
+        });
+
+        clearButton.addEventListener('click', () => {
+            wordLabel.innerHTML = 'Recognized Word: ';
+        });
+
+        // Initialize the webcam stream
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch((err) => {
+                console.error('Error accessing the webcam: ', err);
+            });
+    </script>
+</body>
+</html>

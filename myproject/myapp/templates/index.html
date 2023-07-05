@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Language and Hand Gestures Using CNN</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        #video-stream {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body class="bg-secondary">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <div class="container-fluid">
+        <a href="#" style="text-decoration:none">
+            <h2 class="text-white">Sign Language and Hand Gestures Using CNN</h2>
+        </a>
+    </div>
+</nav>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h3>{{ running }}</h3>
+            <a href="{% url 'toggle_process' %}">
+                <button id="start_button" class="btn btn-success">{{ running|yesno:"Stop Process,Start Process" }}</button>
+            </a>
+            <br>
+            <h3 id="word_label">{{ word_label }}</h3>
+            <a href="{% url 'clear_word' %}">
+            <button class="btn btn-danger" onclick="clearWord()">Clear Word</button>
+            </a>
+        </div>
+        <div class="col-md-6">
+            <div id="video-stream">
+                <img class="rounded img-responsive" src="{% url 'video_feed' %}" style="border:5px solid blue"
+                     width="800" height="400">
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="bg-dark text-white" style="color:#000">
+    <h4 class="text-center"> © - 2023 Sign Language And Hand gestures Recognition System Using CNN.</h4>
+    <h6 class="text-center">All rights reserved | Design by <a href="#">Backend Software Engineer At ALX.</a> Developed
+        By Omondi Jeff</h6>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script>
+    function clearWord() {
+        $.ajax({
+            url: "{% url 'clear_word' %}",
+            success: function (response) {
+                $("#word_label").text("Recognized Word:");
+            }
+        });
+    }
+</script>
+</body>
+</html>
