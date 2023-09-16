@@ -1,60 +1,416 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
 <head>
-    <title>Sign Language and Hand Gestures Using CNN</title>
+    <title>Sign Language and Hand Gestures</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Your custom stylesheet -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+      <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="static/css/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="static/css/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/css/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="static/css/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="static/css/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="static/css/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="static/css/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="static/css/assets/css/style.css" rel="stylesheet">
     <style>
-        #video-stream {
-            margin-top: 20px;
+        body{
+        font-family: 'Open Sans', sans-serif;
         }
     </style>
 </head>
-<body class="bg-secondary">
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-    <div class="container-fluid">
-        <a href="#" style="text-decoration:none">
-            <h2 class="text-white">Sign Language and Hand Gestures Using CNN</h2>
-        </a>
+<body>
+<!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+      <h1 class="logo me-auto"><a href="index.html">Sign Language</a></h1>
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+          <li><a class="nav-link scrollto" href="#about">About</a></li>
+          <li><a class="nav-link scrollto" href="#gallery">Gallery</a></li>
+          <li><a class="nav-link scrollto" href="#services">Services</a></li>
+          <li><a class="nav-link scrollto" href="#team">Team</a></li>
+            <li>
+                                <a class="nav-link" href="{% url 'registration' %}">
+                                    <button class="btn btn-primary rounded-pill btn-icon">
+                                        <i class="fas fa-user-plus"></i> Register
+                                    </button>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="{% url 'login' %}">
+                                    <button class="btn btn-success rounded-pill btn-icon">
+                                        <i class="fas fa-sign-in-alt"></i> Login
+                                    </button>
+                                </a>
+                            </li>
+          <li><a class="getstarted scrollto" href="{% url 'base' %}">Get Started</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
     </div>
-</nav>
-<br>
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <h3>{{ running }}</h3>
-            <a href="{% url 'toggle_process' %}">
-                <button id="start_button" class="btn btn-success">{{ running|yesno:"Stop Process,Start Process" }}</button>
-            </a>
-            <br>
-            <h3 id="word_label">{{ word_label }}</h3>
-            <a href="{% url 'clear_word' %}">
-            <button class="btn btn-danger" onclick="clearWord()">Clear Word</button>
-            </a>
+  </header><!-- End Header -->
+
+
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex align-items-center bg-secondary">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
+          <h4 class="text-white">Better Solutions For Persons with hearing or dumped</h4>
+          <h6 class="text-white">The System is Designed to Recognized Gestures</h6>
+          <div class="d-flex justify-content-center justify-content-lg-start">
+            <a href="#about" class="btn-get-started scrollto">Get Started</a>
+          </div>
         </div>
-        <div class="col-md-6">
-            <div id="video-stream">
-                <img class="rounded img-responsive" src="{% url 'video_feed' %}" style="border:5px solid blue"
-                     width="800" height="400">
+        <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-in" data-aos-delay="200">
+          <img src="{% static 'images/ku.jpg' %}"
+               class="img-fluid animated rounded" alt="" style="width:100%;height:300px">
+        </div>
+      </div>
+    </div>
+
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+    <!-- ======= Clients Section ======= -->
+    <section id="clients" class="clients section-bg">
+      <div class="container">
+
+        <div class="row" data-aos="zoom-in">
+
+          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
+            <img src="assets/img/clients/client-1.png" class="img-fluid" alt="">
+          </div>
+
+          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
+            <img src="assets/img/clients/client-2.png" class="img-fluid" alt="">
+          </div>
+
+          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
+            <img src="assets/img/clients/client-3.png" class="img-fluid" alt="">
+          </div>
+
+          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
+            <img src="assets/img/clients/client-4.png" class="img-fluid" alt="">
+          </div>
+
+          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
+            <img src="assets/img/clients/client-5.png" class="img-fluid" alt="">
+          </div>
+
+          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
+            <img src="assets/img/clients/client-6.png" class="img-fluid" alt="">
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Cliens Section -->
+
+    <!-- ======= About Us Section ======= -->
+    <section id="about" class="about">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+          <h2>About Us</h2>
+        </div>
+
+        <div class="row content">
+          <div class="col-lg-6">
+             <p class="text-muted">
+                Sign Language and Hand Gestures Using CNN is a cutting-edge website that employs Convolutional Neural Networks (CNN) to recognize and interpret sign language and hand gestures. Our mission is to bridge communication gaps and empower individuals with hearing impairments by providing an intuitive and accessible communication platform.
+            </p>
+            <p class="text-muted">
+                Leveraging computer vision techniques, our system captures and analyzes hand movements with precision, allowing for accurate translation of sign language alphabets and gestures into text or speech. This technology revolutionizes communication for both those who use sign language and those who are not familiar with it.
+            </p>
+          </div>
+          <div class="col-lg-6 pt-4 pt-lg-0">
+           <p class="text-muted">
+                Our user-friendly interface offers real-time sign language recognition through webcam or camera-enabled devices. This technology-driven platform facilitates seamless interaction and fosters a deeper understanding between diverse communities.
+            </p>
+            <p class="text-muted">
+                With a commitment to advancing sign language recognition and promoting inclusivity, we invite you to join us in making communication accessible to all. Together, we can create a world where technology bridges the gap and empowers individuals with hearing impairments to express themselves effortlessly.
+            </p>
+            <p class="text-muted">
+                <i>Empower. Communicate. Inclusivity.</i>
+            </p>
+            <a href="#" class="btn-learn-more">Learn More</a>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Us Section -->
+
+    <!-- ======= Services Section ======= -->
+    <section id="services" class="services section-bg">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+          <h2>Services</h2>
+          <p>A Sign Language and Hand Gesture Recognition System utilizing Convolutional Neura
+              l Networks (CNN) is designed to bridge the communication gap between the deaf
+              and hearing communities.</p>
+        </div>
+
+        <div class="row">
+          <div class="col-xl-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+            <div class="icon-box">
+               <div class="service-item text-center">
+                            <i class="fas fa-camera service-icon fa-3x"></i>
+                            <h3 class="service-title">Real-time Gesture Recognition</h3>
+                            <p class="service-description">Our system uses CNN to recognize hand gestures in real-time, enabling communication with individuals who use sign language.</p>
+                        </div>
+            </div>
+          </div>
+
+          <div class="col-xl-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
+            <div class="icon-box">
+               <div class="service-item text-center">
+                            <i class="fas fa-american-sign-language-interpreting service-icon fa-3x"></i>
+                            <h3 class="service-title">Sign Language Translation</h3>
+                            <p class="service-description">We provide sign language
+                                translation services, converting sign language gestures into
+                                written or spoken language for effective communication.</p>
+                        </div>
+            </div>
+          </div>
+
+          <div class="col-xl-4 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="300">
+            <div class="icon-box">
+              <div class="service-item text-center">
+                            <i class="fas fa-clipboard-list service-icon fa-3x"></i>
+                            <h3 class="service-title">Gesture Recognition Training</h3>
+                            <p class="service-description">We offer training programs for individuals interested in learning how to recognize and interpret hand gestures using CNN-based models.</p>
+                        </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Services Section -->
+ <!-- ======= Services Section ======= -->
+    <section id="gallery" class="gallery section-bg">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+          <h2>Gallery</h2>
+		<div class ="row">
+				<div class="col-md-3 col-xs-3 gallery-grid gallery1">
+					<a href="{% static 'images/image.jpg' %}" class="swipebox img-fluid img-responsive">
+						<img src="{% static 'images/image2.jpg' %}"
+					class="img-responsive" alt="/" style="height:200px">
+						<div class="textbox">
+							<p><i class="fa fa-picture-o" aria-hidden="true"></i></p>
+						</div>
+				</a>
+				</div>
+				<div class="col-md-3 col-xs-3 gallery-grid gallery1">
+					<a href="{% static 'images/image3.jpg' %}" class="swipebox img-fluid img-responsive">
+                        <img src="{% static 'images/image3.jpg' %}"
+					 class="img-responsive" alt="/" style="height:200px">
+						<div class="textbox">
+							<p><i class="fa fa-picture-o" aria-hidden="true"></i></p>
+						</div>
+				</a>
+				</div>
+				<div class="col-md-3 col-xs-3 gallery-grid gallery1">
+					<a href="{% static 'images/image5.jpg' %}" class="swipebox swipebox img-fluid img-responsive">
+                        <img src="{% static 'images/image5.jpg' %}"
+					class="img-responsive" alt="/" style="height:200px">
+						<div class="textbox">
+							<p><i class="fa fa-picture-o" aria-hidden="true"></i></p>
+						</div>
+				</a>
+				</div>
+				<div class="col-md-3 col-xs-3 gallery-grid gallery1">
+					<a href="{% static 'images/image4.jpg' %}" class="swipebox swipebox img-fluid img-responsive">
+                        <img src="{% static 'images/image4.jpg' %}"
+					 class="img-responsive" alt="/" style="height:200px">
+						<div class="textbox">
+							<p><i class="fa fa-picture-o" aria-hidden="true"></i></p>
+						</div>
+				</a>
+				</div>
+				<br><br>
+				<div class="col-md-3 col-xs-3 gallery-grid gallery1">
+					<a href="{% static 'images/jeff.png' %}" class="swipebox swipebox img-fluid img-responsive">
+                        <img src="{% static 'images/jeff.png' %}"
+					 class="img-responsive" alt="/" style="height:200px">
+						<div class="textbox">
+							<p><i class="fa fa-picture-o" aria-hidden="true"></i></p>
+						</div>
+					</a>
+				</div>
+				<div class="col-md-3 col-xs-3 gallery-grid gallery1">
+					<a href="{% static 'images/ku.jpg' %}" class="swipebox swipebox img-fluid img-responsive">
+                        <img src="{% static 'images/ku.jpg' %}"
+					class="img-responsive" alt="/" style="height:200px">
+						<div class="textbox">
+							<p><i class="fa fa-picture-o" aria-hidden="true"></i></p>
+					   </div>
+				   </a>
+				</div>
+				<div class="col-md-3 col-xs-3 gallery-grid gallery1">
+					<a href="{% static 'images/ju.jpg' %}" class="swipebox swipebox img-fluid img-responsive">
+                        <img src="{% static 'images/ju.jpg' %}"
+					 class="img-responsive" alt="/" style="height:200px">
+						<div class="textbox">
+							<p><i class="fa fa-picture-o" aria-hidden="true"></i></p>
+						</div>
+					</a>
+				</div>
+				<div class="col-md-3 col-xs-3 gallery-grid gallery1">
+					<a href="{% static 'images/mu.jpg' %}" class="swipebox swipebox img-fluid img-responsive">
+                        <img src="{% static 'images/mu.jpg' %}"
+					class="img-responsive" alt="/" style="height:200px">
+						<div class="textbox">
+							<p><i class="fa fa-picture-o" aria-hidden="true"></i></p>
+					   </div>
+				   </a>
+				</div>
+				<div class="clearfix"> </div>
+
+	</div>
+	</div>
+      </div>
+	</section>
+    <br><br>
+
+
+    <!-- ======= Team Section ======= -->
+    <section id="team" class="team section-bg">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+          <h2>Team</h2>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="100">
+              <div class="pic"><img src="{% static 'images/img6.jpg'%}" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Omondi Jeff </h4>
+                <span>Chief Executive Officer</span>
+                <div class="social">
+                  <a href=""><i class="ri-twitter-fill"></i></a>
+                  <a href=""><i class="ri-facebook-fill"></i></a>
+                  <a href=""><i class="ri-instagram-fill"></i></a>
+                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 mt-4 mt-lg-0">
+            <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="200">
+              <div class="pic"><img src="{% static 'images/image6.jpeg'%}" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Olivia Mwikali</h4>
+                <span>Software Engineer</span>
+
+                <div class="social">
+                  <a href=""><i class="ri-twitter-fill"></i></a>
+                  <a href=""><i class="ri-facebook-fill"></i></a>
+                  <a href=""><i class="ri-instagram-fill"></i></a>
+                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 mt-4">
+            <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="300">
+              <div class="pic"><img src="{% static 'images/image5.jpg'%}" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Jeff Olie</h4>
+                <span>Data Scientists</span>
+                <div class="social">
+                  <a href=""><i class="ri-twitter-fill"></i></a>
+                  <a href=""><i class="ri-facebook-fill"></i></a>
+                  <a href=""><i class="ri-instagram-fill"></i></a>
+                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 mt-4">
+            <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="400">
+              <div class="pic"><img src="{% static 'images/image4.jpg'%}" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Olie Jeffy</h4>
+                <span>Cybersecurity Engineer</span>
+                <div class="social">
+                  <a href=""><i class="ri-twitter-fill"></i></a>
+                  <a href=""><i class="ri-facebook-fill"></i></a>
+                  <a href=""><i class="ri-instagram-fill"></i></a>
+                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Team Section -->
+
+  </main><!-- End #main -->
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="static/css/assets/vendor/aos/aos.js"></script>
+  <script src="static/css/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="static/css/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="static/css/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="static/css/assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="static/css/assets/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="static/css/assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="static/css/assets/js/main.js"></script>
+<footer class="footer rounded" style="background-color: indigo;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h5 class="text-white mb-3">
+                    <b>&copy; 2023 Sign Language And Hand Gestures Recognition System Using CNN. All rights reserved.</b>
+                </h5>
+                <p class="text-white">
+                    Designed by Backend Software Engineer at ALX: Omondi Jeff
+                </p>
             </div>
         </div>
     </div>
-</div>
-<br>
-<div class="bg-dark text-white" style="color:#000">
-    <h4 class="text-center"> © - 2023 Sign Language And Hand gestures Recognition System Using CNN.</h4>
-    <h6 class="text-center">All rights reserved | Design by <a href="#">Backend Software Engineer At ALX.</a> Developed
-        By Omondi Jeff</h6>
-</div>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script>
-    function clearWord() {
-        $.ajax({
-            url: "{% url 'clear_word' %}",
-            success: function (response) {
-                $("#word_label").text("Recognized Word:");
-            }
-        });
-    }
-</script>
+</footer>
 </body>
 </html>

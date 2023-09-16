@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language and Hand Gestures</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="static/css/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="static/css/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="static/css/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="static/css/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="static/css/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="static/css/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="static/css/assets/css/style.css" rel="stylesheet">
+    <style>
+        /* Custom input styling */
+        .custom-input-container {
+            background-color: #fff;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+        .custom-input {
+            border: none;
+            background-color: transparent;
+            width: 100%;
+            margin-left: 10px;
+        }
+        .custom-input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        /* Social login icons */
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .social-icon {
+            font-size: 24px;
+            margin: 0 10px;
+            color: #007bff;
+            cursor: pointer;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4 rounded p-4 bg-light">
+            <div class="text-center">
+                <img class="img-fluid img-responsive rounded-circle"
+                     src="{% static 'images/jeff.png' %}" alt="Logo" width="100px" height="100px">
+                <h2 class="mt-3 text-dark">Login</h2>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="username" class="form-label text-dark">Username:</label>
+                    <div class="custom-input-container">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        <input class="custom-input" type="text" id="username" name="username" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label text-dark">Password:</label>
+                    <div class="custom-input-container">
+                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                        <input class="custom-input" type="password" id="password" name="password" required>
+                        <span class="input-group-text" style="cursor: pointer;" id="toggle-password">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block text-white" type="submit">Login</button>
+            </form>
+            <div class="social-icons mt-3">
+                <a href="#" onclick="history.back();" class="text-primary">
+                    <i class="fas fa-arrow-left mr-1"></i> Back
+                </a>
+                <i class="fab fa-google social-icon"></i>
+                <i class="fab fa-facebook-f social-icon"></i>
+                <i class="fab fa-github social-icon"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript to toggle password visibility -->
+<script>
+    const passwordInput = document.querySelector("#password");
+    const togglePassword = document.querySelector("#toggle-password");
+
+    togglePassword.addEventListener("click", () => {
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            togglePassword.querySelector("i").classList.remove("fa-eye");
+            togglePassword.querySelector("i").classList.add("fa-eye-slash");
+        } else {
+            passwordInput.type = "password";
+            togglePassword.querySelector("i").classList.remove("fa-eye-slash");
+            togglePassword.querySelector("i").classList.add("fa-eye");
+        }
+    });
+</script>
+<!-- Your remaining HTML content -->
+<!-- ... -->
+
+</body>
+</html>

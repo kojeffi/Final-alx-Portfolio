@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>View Recognized Alphabets</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+     /* Background */
+        body {
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: top;
+            background-color: #f5f5f5;
+            font-family: 'Open Sans', sans-serif;
+            width: 100%;
+            height: 100%;
+            letter-spacing: 0.02em;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Add your custom CSS styles here */
+
+        /* Footer */
+        .footer {
+            background-color: #333333;
+            color: #FFFFFF;
+            padding: 20px 80px;
+            text-align: center;
+            position: auto;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .footer a {
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        /* Define the glow animation */
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.9);
+    }
+    100% {
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+    }
+}
+
+/* Apply the animation to the notification icon */
+#notification-icon {
+    animation: glow 1s infinite;
+}
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+</head>
+<body>
+    <!-- Add a Bootstrap navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: indigo;color:#fff">
+        <a href="">
+            <img class="img-fluid img-responsive rounded-circle"
+                 src="{% static 'images/jeff2.png' %}" alt="Logo" width="80px" height="40px">
+        </a>
+        <h1 class="logo me-auto"><a class="navbar-brand text-white" href="{% url 'base' %}"><b><i>Sign Language</i></b></a></h1>
+
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-3"></div>
+            <div class="col-md-3"><i class="fas fa-bell h5" id="notification-icon">
+                <span id="notification-count" class="badge badge-success h6">0</span>
+            </i></div>
+            <div class="col-md-3"></div>
+        </div>
+
+
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto"> <!-- Use ml-auto class here -->
+                <li class="nav-item active">
+                    <a class="nav-link text-white" href="{% url 'base' %}"><b>Home</b><span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'index' %}"><b>About</b></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'index' %}"><b>Services</b></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'index' %}"><b>Contact</b></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h4 class="text-center text-info">Recognized Alphabets</h4>
+        <!-- Add a button to clear recognized alphabets -->
+        <form method="post" action="{% url 'clear_recognized_alphabets' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Clear Recognized Alphabet</button>
+        </form>
+        <br>
+        <!-- Add a Bootstrap table -->
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Alphabet</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for alphabet in recognized_alphabets %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ alphabet }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <br><br><br><br><br><br><br><br><br><br><br>
+
+       <footer class="footer rounded" style="background-color: indigo;color:#fff">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h6 class="text-white mb-2">
+                            <b>&copy; 2023 Sign Language And Hand Gestures Recognition System Using CNN. All rights
+                                reserved.</b>
+                        </h6>
+                        <p class="text-white">
+                            Designed by Backend Software Engineer at ALX: Omondi Jeff
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+
+
+    <!-- Add Bootstrap and jQuery JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Add your custom JavaScript here if needed -->
+    <script>
+    let recognizedAlphabetCount = 0;
+    function updateNotificationCount() {
+    recognizedAlphabetCount++; // Increment the count
+    const notificationCountElement = document.getElementById('notification-count');
+    notificationCountElement.textContent = recognizedAlphabetCount.toString();
+    }
+    // Call this function whenever a new alphabet is recognized
+    updateNotificationCount();
+</script>
+    <script>>
+    function clearRecognizedAlphabets() {
+    // Logic to clear recognized alphabets
+    // Reset the count to zero
+    recognizedAlphabetCount = 0;
+    // Update the notification count display
+    const notificationCountElement = document.getElementById('notification-count');
+    notificationCountElement.textContent = '0';
+    }
+    // Call this function when the "Clear" button is clicked
+    clearRecognizedAlphabets();
+    // Add your custom JavaScript logic here
+    </script>
+</body>
+</html>

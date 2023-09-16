@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0-beta2/css/all.min.css">
+    <link href="{% static 'css/assets/css/style.css' %}" rel="stylesheet">
+    <style>
+      /* Spinner */
+        .spinner {
+            display: inline-block;
+            width: 1.5rem;
+            height: 1.5rem;
+            vertical-align: text-bottom;
+            border: .25em solid currentColor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            -webkit-animation: spinner-border .75s linear infinite;
+            animation: spinner-border .75s linear infinite;
+        }
+
+        @-webkit-keyframes spinner-border {
+            to {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spinner-border {
+            to {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        .glow:hover {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 0, 0, 0.1), 0 0 30px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease-in-out;
+    }
+    </style>
+ <style>
+    /* Existing styles ... */
+
+    /* Glowing text effect (green) */
+    .navbar-brand.bright-glow {
+        position: relative;
+        font-size: 1.5em;
+        transition: color 0.3s ease-in-out;
+        color: #00FF00; /* Set the initial color to green */
+    }
+
+    .navbar-brand.bright-glow:hover {
+        color: transparent;
+        animation: glow 1s infinite alternate;
+    }
+
+    @keyframes glow {
+        0% {
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5); /* Green shadow */
+        }
+        100% {
+            text-shadow: 0 0 20px rgba(0, 255, 0, 1), 0 0 30px rgba(0, 255, 0, 0.8); /* Stronger green shadow */
+        }
+    }
+</style>
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: indigo">
+    <div class="container">
+        <a href="">
+            <img class="img-fluid img-responsive rounded-circle"
+                 src="{% static 'images/jeff2.png' %}" alt="Logo" width="80px" height="40px">
+        </a>
+      <a class="navbar-brand bright-glow glow" href="{% url 'index' %}">
+        <b><i>Sign Language</i></b></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarNav" aria-controls="navbarNav"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'index' %}">
+                        <i class="fas fa-home"></i> <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#">
+                        <i class="fas fa-info-circle"></i> <span>About</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#">
+                        <i class="fas fa-cogs"></i> <span>Services</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'view_recognized_alphabets' %}">
+                        <i class="fas fa-check-circle"></i> <span>Recognized Alphabets</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+  <p class="text-center text-dark">Welcome back, {{ username }}!</p>
+<div id="main">
+    <div class="content">
+        <div class="container rounded shadow">
+            <div class="row animated-div">
+                <div class="col-md-6">
+                    <h3>{{ running }}</h3>
+                    <h3 class="text-primary" id="word_label">{{ word_label }}</h3>
+                    <br><br>
+                </div>
+                <div class="col-md-6 rounded" style="background-color: #FFFFFF;">
+                    <br>
+                    <div class="embed-responsive embed-responsive-16by9" id="video-stream">
+                        <img class="embed-responsive-item rounded img-fluid" src="{% url 'video_feed' %}"
+                             style="border:2px solid indigo;border-radius: 20px;
+                                    box-shadow: 5px 5px 10px 10px rgba(0, 0, 0, 0.9);">
+                        <div id="spinner" style="display: '''html;">
+                            <div class="spinner bg-success h1"></div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <h5 class="text-dark">Click Stop Button to View Recognized Alphabets</h5>
+                       <div class="col-md-4 center-buttons">
+    <a class="nav-link" href="{% url 'toggle_process' %}">
+        <button id="start_button_text" class="btn btn-primary rounded glow">
+            <span id="start_button_icon">
+                {% if running %}
+                <i class="fas fa-stop"></i> Stop
+                {% else %}
+                <i class="fas fa-play"></i> Start
+                {% endif %}
+            </span>
+        </button>
+    </a>
+</div>
+<div class="col-md-4 center-buttons">
+    <form method="post" action="{% url 'save_recognized_alphabets' %}">
+        {% csrf_token %}
+        <button class="btn btn-secondary nav-link text-white rounded glow" type="submit">
+            <i class="fas fa-save"></i> Save
+        </button>
+    </form>
+</div>
+<div class="col-md-4 center-buttons">
+    <a class="nav-link" href="{% url 'clear_word' %}">
+        <button class="btn btn-danger rounded text-white glow" onclick="clearWord()">
+            <i class="fas fa-trash"></i> Clear
+        </button>
+    </a>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<footer class="footer" style="background-color: indigo;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h6 class="text-white mt-2">
+                    <b>&copy; 2023 Sign Language And Hand Gestures Recognition System Using CNN. All rights reserved.</b>
+                </h6>
+                <p class="text-white">Designed by Omondi Jeff, Backend Software Engineer at ALX</p>
+                <div class="social-icons mt-3">
+                    <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://www.whatsapp.com" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+   <script>
+    function toggleSidebar() {
+    const sidebar = document.getElementById('mySidebar');
+    const main = document.getElementById('main');
+
+    if (sidebar.style.left === '-250px') { // Check if the sidebar is hidden
+        sidebar.style.left = '0'; // Show the sidebar
+        main.style.marginLeft = '250px'; // Adjust the content area
+    } else {
+        sidebar.style.left = '-250px'; // Hide the sidebar again
+        main.style.marginLeft = '0'; // Reset the content area
+    }
+}
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
+

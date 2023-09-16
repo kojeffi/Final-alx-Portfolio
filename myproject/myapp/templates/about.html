@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+
+<head>
+    <title>Sign Language and Hand Gestures Using CNN</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* Background */
+        body {
+            background-color: #F5F5F5;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #333333;
+        }
+
+        .navbar-brand {
+            color: #FFFFFF;
+        }
+
+        .navbar-brand:hover,
+        .navbar-brand:focus {
+            color: #CCCCCC;
+        }
+
+        .navbar-nav .nav-link {
+            color: #FFFFFF;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link:focus {
+            color: #CCCCCC;
+        }
+
+        /* Headings */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            color: #333333;
+        }
+
+        /* Paragraphs */
+        p {
+            color: #555555;
+        }
+
+        /* Links */
+        a {
+            color: #007BFF;
+        }
+
+        a:hover,
+        a:focus {
+            color: #0056b3;
+        }
+
+        /* Blurred Box */
+        #body {
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: top;
+            background-image: url(static/images/image5.jpg);
+            width: 100%;
+            height: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+            letter-spacing: 0.02em;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .blurred-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px;
+            height: 350px;
+            background: inherit;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .blurred-box:after {
+            content: '';
+            width: 300px;
+            height: 300px;
+            background: inherit;
+            position: absolute;
+            left: -25px;
+            right: 0;
+            top: -25px;
+            bottom: 0;
+            box-shadow: inset 0 0 0 200px rgba(255, 255, 255, 0.05);
+            filter: blur(10px);
+        }
+
+        /* Form Styling */
+        .user-login-box {
+            position: relative;
+            margin-top: 50px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .user-login-box>* {
+            display: inline-block;
+            width: 200px;
+        }
+
+        .user-icon {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            border-radius: 50%;
+            background-size: contain;
+            background-image: url(https://pbs.twimg.com/profile_images/725321660484583424/ArQ4fM3k.jpg);
+        }
+
+        .user-name {
+            margin-top: 15px;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        input.user-password {
+            width: 120px;
+            height: 18px;
+            opacity: 0.4;
+            border-radius: 2px;
+            padding: 5px 15px;
+            border: 0;
+        }
+
+        /* Video Stream and Buttons */
+        #video-stream {
+            margin-top: 20px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .center-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .center-buttons .btn {
+            margin-right: 10px;
+            margin-left: 10px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: gray;
+            color: #ffffff;
+            padding: 20px 80px;
+            text-align: center;
+            position: auto;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        /* Spinner */
+        .spinner {
+            display: inline-block;
+            width: 1.5rem;
+            height: 1.5rem;
+            vertical-align: text-bottom;
+            border: .25em solid currentColor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            -webkit-animation: spinner-border .75s linear infinite;
+            animation: spinner-border .75s linear infinite;
+        }
+
+        @-webkit-keyframes spinner-border {
+            to {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spinner-border {
+            to {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark rounded" style="background-color:indigo">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img class="img-fluid rounded d-inline-block align-text-top" src="{% static 'images/jeff.png' %}"
+                    alt="Logo" width="80px" height="100px">
+            </a>
+            <a href="#" style="text-decoration:none">
+                <h3 class="text-white"><b>Sign Language</b></h3>
+            </a>
+            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-md-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <h5><a class="nav-link text-white text-center" href="/">Home</a></h5>
+                    </li>
+                    <li class="nav-item">
+                        <h5><a class="nav-link text-white text-center" href="{% url 'about' %}">About</a></h5>
+                    </li>
+                    <li class="nav-item">
+                        <h5><a class="nav-link text-white text-center" href="{% url 'services' %}">Services</a></h5>
+                    </li>
+                    <li class="nav-item center">
+                        <h5>
+                            <a class="text-white nav-link text-center" href="{% url 'register' %}">
+                                <button class="btn btn-primary rounded btn-icon">
+                                    <i class="fas fa-user-plus"></i> Register
+                                </button>
+                            </a>
+                        </h5>
+                    </li>
+                    <li class="nav-item">
+                        <h5>
+                            <a class="text-white nav-link text-center" href="{% url 'login' %}">
+                                <button class="btn btn-secondary rounded btn-icon">
+                                    <i class="fas fa-sign-in-alt"></i> Login
+                                </button>
+                            </a>
+                        </h5>
+                    </li>
+                    <li class="nav-item">
+                        <h4><a class="nav-link text-white text-center" href="#"><i class="fab fa-facebook"></i></a></h4>
+                    </li>
+                    <li class="nav-item">
+                        <h4><a class="nav-link text-white text-center" href="#"><i class="fab fa-twitter"></i></a></h4>
+                    </li>
+                    <li class="nav-item">
+                        <h4><a class="nav-link text-white text-center" href="#"><i class="fab fa-instagram"></i></a>
+                        </h4>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br>
+<section id="about-section">
+    <div class="container text-dark rounded" style="background-color:rgb(210, 210, 210)">
+        <h3><b>About Sign Language and Hand Gestures Using CNN</b></h3>
+        <p class="text-dark">
+           <b> Sign Language and Hand Gestures Using CNN is a website that aims to recognize and interpret sign language and hand gestures using Convolutional Neural Networks (CNN). The system employs computer vision techniques to capture and analyze hand movements, enabling communication between individuals who use sign language and those who may not be familiar with it.
+
+            By leveraging the power of CNN, the website can identify and translate sign language alphabets and gestures into text or speech. This technology opens up opportunities for improved communication, accessibility, and inclusivity for individuals with hearing impairments or those who rely on sign language for communication.
+
+            The Sign Language and Hand Gestures Using CNN website provides a user-friendly interface for real-time sign language recognition. Users can use a webcam or camera-enabled device to interact with the system and receive accurate interpretations of their hand movements. The website aims to bridge the communication gap and promote understanding between different communities.
+
+            We are dedicated to advancing the field of sign language recognition and making communication more accessible for everyone. Join us on this journey to empower individuals with hearing impairments and promote inclusivity through technology.
+</b>
+        </p>
+    </div>
+</section>
+    <br>
+    <footer class="footer rounded" style="background-color:indigo">
+        <div class="container ">
+            <h5 class="text-white"><b>&copy 2023 Sign Language And Hand Gestures Recognition System Using CNN.
+                    All rights reserved | Design by Backend Software Engineer at ALX: Omondi Jeff</b></h5>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
